@@ -10,3 +10,11 @@ yarn-error.log*
 
 # Dependency directories
 node_modules/
+dist/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
