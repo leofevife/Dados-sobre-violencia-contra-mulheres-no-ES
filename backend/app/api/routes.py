@@ -1,46 +1,19 @@
 import json
 import os
 from pathlib import Path
-from typing import List
+from fastapi import APIRouter, HTTPException
 
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
+from app.db.client import CloudflareD1Client
+from app.schemas.payloads import SqlQuery, ReceivedData
 
-from database import CloudflareD1Client, load_env_variables
+router = APIRouter()
+cf_client = CloudflareD1Client()
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = BASE_DIR / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
-load_env_variables(BASE_DIR / ".env")
-
-app = FastAPI(
-    title="Cloudflare D1 Receiver API",
-    description="API REST para receber dados e consultar o banco de dados Cloudflare D1.",
-    version="1.0.0",
-)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-cf_client = CloudflareD1Client()
-
-
-class SqlQuery(BaseModel):
-    statement: str = Field(..., description="SQL statement to execute on Cloudflare D1")
-
-
-class ReceivedData(BaseModel):
-    data: dict = Field(..., description="Payload data sent from the source")
-
-
-@app.get("/status")
+@router.get("/status")
 def status():
     return {
         "status": "ok",
@@ -48,8 +21,7 @@ def status():
         "cloudflare_database_id": cf_client.database_id,
     }
 
-
-@app.get("/cloudflare/health")
+@router.get("/cloudflare/health")
 def cloudflare_health():
     try:
         result = cf_client.query("SELECT 1")
@@ -67,8 +39,7 @@ def cloudflare_health():
             },
         )
 
-
-@app.post("/cloudflare/query")
+@router.post("/cloudflare/query")
 def query_cloudflare(query: SqlQuery):
     try:
         result = cf_client.query(query.statement)
@@ -76,8 +47,7 @@ def query_cloudflare(query: SqlQuery):
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 
-
-@app.get("/cloudflare/tables")
+@router.get("/cloudflare/tables")
 def list_tables():
     try:
         tables = cf_client.list_tables()
@@ -85,8 +55,7 @@ def list_tables():
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 
-
-@app.get("/cloudflare/table/{table_name}")
+@router.get("/cloudflare/table/{table_name}")
 def get_table(table_name: str):
     try:
         rows = cf_client.select_table(table_name)
@@ -96,8 +65,7 @@ def get_table(table_name: str):
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 
-
-@app.post("/cloudflare/receive")
+@router.post("/cloudflare/receive")
 def receive_data(payload: ReceivedData):
     file_path = DATA_DIR / "received_data.json"
     try:
@@ -107,8 +75,7 @@ def receive_data(payload: ReceivedData):
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 
-
-@app.get("/cloudflare/sample")
+@router.get("/cloudflare/sample")
 def sample_query():
     sql = os.getenv("DEFAULT_CLOUDFLARE_SQL", "SELECT * FROM my_table LIMIT 100")
     try:

@@ -1,20 +1,10 @@
 import os
 import re
-from pathlib import Path
 from typing import Any, Dict, List, Optional
-
-from fastapi import params
 import requests
-from dotenv import load_dotenv
 
 CLOUDFLARE_API_BASE = "https://api.cloudflare.com/client/v4"
 TABLE_NAME_RE = re.compile(r"^[A-Za-z0-9_]+$")
-
-
-def load_env_variables(env_path: Path) -> None:
-    if env_path.exists():
-        load_dotenv(dotenv_path=str(env_path), override=False)
-
 
 class CloudflareD1Client:
     def __init__(self):
@@ -76,6 +66,9 @@ class CloudflareD1Client:
         rows = self.query(
             "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
         )
+        if isinstance(rows, list) and len(rows) > 0 and "results" in rows[0]:
+            rows = rows[0]["results"]
+            
         table_names: List[str] = []
         for row in rows:
             if isinstance(row, dict) and "name" in row:
@@ -89,4 +82,6 @@ class CloudflareD1Client:
             raise ValueError("Nome da tabela inválido")
         statement = f"SELECT * FROM {table_name} LIMIT {limit}"
         rows = self.query(statement)
+        if isinstance(rows, list) and len(rows) > 0 and "results" in rows[0]:
+            return rows[0]["results"]
         return rows if isinstance(rows, list) else []
