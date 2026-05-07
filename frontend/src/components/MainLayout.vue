@@ -1,7 +1,24 @@
 <template>
   <v-app>
+    <v-navigation-drawer v-model="drawer" app color="surface">
+      <v-list-item
+        title="Painel de Dados"
+        subtitle="Menu de Navegação"
+        class="py-4"
+      ></v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list density="compact" nav>
+        <v-list-item prepend-icon="mdi-home" title="Página Inicial" to="/"></v-list-item>
+        <v-list-item prepend-icon="mdi-table" title="Feminicídio" to="/feminicidio"></v-list-item>
+        <v-list-item prepend-icon="mdi-table-multiple" title="Violência Geral" to="/violencia-geral"></v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
     <v-app-bar color="primary" elevation="3">
-      <v-app-bar-title class="text-center font-weight-bold text-black w-100">
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-title class="font-weight-bold text-black">
         Dados sobre violência contra mulheres no ES
       </v-app-bar-title>
     </v-app-bar>
@@ -13,6 +30,9 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
+
+const drawer = ref(true)
 </script>
 
 <style>
