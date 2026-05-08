@@ -4,11 +4,11 @@
  * Manual routes for ./src/pages/*.vue
  */
 
-// Composables
 import { createRouter, createWebHistory } from 'vue-router'
 import PaginaInicial from '@/pages/PaginaInicial.vue'
 import TabelaFeminicidio from '@/pages/TabelaFeminicidio.vue'
 import TabelaViolenciaGeral from '@/pages/TabelaViolenciaGeral.vue'
+import AnaliseViolenciaPorHora from '@/pages/AnaliseViolenciaPorHora.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +27,11 @@ const router = createRouter({
       path: '/violencia-geral',
       name: 'ViolenciaGeral',
       component: TabelaViolenciaGeral,
+    },
+    {
+      path: '/analise/violencia-por-hora',
+      name: 'AnaliseViolenciaPorHora',
+      component: AnaliseViolenciaPorHora,
     },
   ],
 })

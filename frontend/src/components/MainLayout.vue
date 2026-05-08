@@ -11,8 +11,13 @@
 
       <v-list density="compact" nav>
         <v-list-item prepend-icon="mdi-home" title="Página Inicial" to="/"></v-list-item>
+        
+        <v-list-subheader>Tabelas de Dados</v-list-subheader>
         <v-list-item prepend-icon="mdi-table" title="Feminicídio" to="/feminicidio"></v-list-item>
         <v-list-item prepend-icon="mdi-table-multiple" title="Violência Geral" to="/violencia-geral"></v-list-item>
+
+        <v-list-subheader>Análises</v-list-subheader>
+        <v-list-item prepend-icon="mdi-chart-line" title="Violência por Hora" to="/analise/violencia-por-hora"></v-list-item>
       </v-list>
     </v-navigation-drawer>
 
