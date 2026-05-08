@@ -2,22 +2,28 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" app color="surface">
       <v-list-item
-        title="Painel de Dados"
-        subtitle="Menu de Navegação"
-        class="py-4"
-      ></v-list-item>
+        class="bg-primary text-black px-6"
+        height="64"
+      >
+        <template v-slot:title>
+          <span class="font-weight-bold">Painel de Dados</span>
+        </template>
+        <template v-slot:subtitle>
+          <span class="text-black font-weight-medium" style="opacity: 0.8">Menu de Navegação</span>
+        </template>
+      </v-list-item>
 
       <v-divider></v-divider>
 
-      <v-list density="compact" nav>
-        <v-list-item prepend-icon="mdi-home" title="Página Inicial" to="/"></v-list-item>
+      <v-list density="compact" nav class="px-4 py-4">
+        <v-list-item prepend-icon="mdi-home" title="Página Inicial" to="/" @click="drawer = false"></v-list-item>
         
         <v-list-subheader>Tabelas de Dados</v-list-subheader>
-        <v-list-item prepend-icon="mdi-table" title="Feminicídio" to="/feminicidio"></v-list-item>
-        <v-list-item prepend-icon="mdi-table-multiple" title="Violência Geral" to="/violencia-geral"></v-list-item>
+        <v-list-item prepend-icon="mdi-table" title="Feminicídio" to="/feminicidio" @click="drawer = false"></v-list-item>
+        <v-list-item prepend-icon="mdi-table-multiple" title="Violência Geral" to="/violencia-geral" @click="drawer = false"></v-list-item>
 
-        <v-list-subheader>Análises</v-list-subheader>
-        <v-list-item prepend-icon="mdi-chart-line" title="Violência por Hora" to="/analise/violencia-por-hora"></v-list-item>
+        <v-list-subheader class="mt-4">Análises</v-list-subheader>
+        <v-list-item prepend-icon="mdi-chart-line" title="Violência por Hora" to="/analise/violencia-por-hora" @click="drawer = false"></v-list-item>
       </v-list>
     </v-navigation-drawer>
 
