@@ -64,7 +64,7 @@ class CloudflareD1Client:
 
     def list_tables(self) -> List[str]:
         rows = self.query(
-            "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name"
+            "SELECT name FROM sqlite_master WHERE type IN ('table', 'view') AND name NOT LIKE 'sqlite_%' ORDER BY name"
         )
         if isinstance(rows, list) and len(rows) > 0 and "results" in rows[0]:
             rows = rows[0]["results"]
