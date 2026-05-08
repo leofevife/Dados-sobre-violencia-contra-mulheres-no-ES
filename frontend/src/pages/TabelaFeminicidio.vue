@@ -37,26 +37,14 @@
                 <span class="font-weight-bold text-uppercase text-caption">{{ column.title }}</span>
                 <v-menu :close-on-content-click="false" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-icon
-                      v-bind="props"
-                      size="small"
-                      class="ml-1 cursor-pointer"
-                      :color="filters[column.value] ? 'primary' : undefined"
-                    >
+                    <v-icon v-bind="props" size="small" class="ml-1 cursor-pointer"
+                      :color="filters[column.value] ? 'primary' : undefined">
                       mdi-filter-variant
                     </v-icon>
                   </template>
                   <v-card min-width="200" class="pa-2">
-                    <v-text-field
-                      v-model="filters[column.value]"
-                      density="compact"
-                      variant="outlined"
-                      hide-details
-                      placeholder="Filtrar..."
-                      prepend-inner-icon="mdi-magnify"
-                      clearable
-                      autofocus
-                    ></v-text-field>
+                    <v-text-field v-model="filters[column.value]" density="compact" variant="outlined" hide-details
+                      placeholder="Filtrar..." prepend-inner-icon="mdi-magnify" clearable autofocus></v-text-field>
                   </v-card>
                 </v-menu>
               </div>
