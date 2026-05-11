@@ -22,8 +22,6 @@
         <v-list-item prepend-icon="mdi-table" title="Feminicídio" to="/feminicidio" @click="drawer = false"></v-list-item>
         <v-list-item prepend-icon="mdi-table-multiple" title="Violência Geral" to="/violencia-geral" @click="drawer = false"></v-list-item>
 
-        <v-list-subheader class="mt-4">Análises</v-list-subheader>
-        <v-list-item prepend-icon="mdi-chart-line" title="Violência por Hora" to="/analise/violencia-por-hora" @click="drawer = false"></v-list-item>
       </v-list>
     </v-navigation-drawer>
 

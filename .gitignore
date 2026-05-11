@@ -60,4 +60,6 @@ htmlcov/
 instance/
 
 # Project Specific
-backend/data/
+backend/data/*.csv
+backend/data/*.json
+backend/data/*.parquet
