@@ -1,10 +1,11 @@
 import json
 import os
 from pathlib import Path
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 
 from app.db.client import CloudflareD1Client
 from app.schemas.payloads import SqlQuery, ReceivedData
+
 
 router = APIRouter()
 cf_client = CloudflareD1Client()
@@ -64,6 +65,16 @@ def get_table(table_name: str):
         raise HTTPException(status_code=400, detail=str(exc))
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
+
+@router.get("/local/table/violencia_geral")
+def get_local_violencia_geral(request: Request):
+    df = request.app.state.df_violencia
+    if df is None:
+        raise HTTPException(status_code=500, detail="Dados não carregados")
+    df_head = df.head(1000).fillna("")
+    rows = df_head.to_dict(orient="records")
+    return {"success": True, "rows": rows}
+
 
 @router.post("/cloudflare/receive")
 def receive_data(payload: ReceivedData):

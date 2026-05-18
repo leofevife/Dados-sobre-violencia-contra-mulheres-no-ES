@@ -80,7 +80,7 @@ import { computed, onMounted, ref } from 'vue'
 
 type TableRow = Record<string, unknown>
 
-const tableName = 'VIOLENCIA_GERAL'
+
 const tableData = ref<TableRow[]>([])
 const filters = ref<Record<string, string>>({})
 const loading = ref(false)
@@ -101,7 +101,7 @@ const loadTable = async () => {
   error.value = ''
 
   try {
-    const tableResult = await fetchJson<{ success: boolean; rows: TableRow[] }>(`/cloudflare/table/${encodeURIComponent(tableName)}`)
+    const tableResult = await fetchJson<{ success: boolean; rows: TableRow[] }>(`/local/table/violencia_geral`)
     tableData.value = tableResult.rows ?? []
   } catch (err: unknown) {
     error.value = err instanceof Error ? err.message : 'Erro desconhecido ao carregar tabela.'
