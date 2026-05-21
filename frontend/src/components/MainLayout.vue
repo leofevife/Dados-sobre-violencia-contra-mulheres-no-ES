@@ -11,6 +11,9 @@
         <template v-slot:subtitle>
           <span class="text-black font-weight-medium" style="opacity: 0.8">Menu de Navegação</span>
         </template>
+        <template v-slot:append>
+          <img src="../assets/fitaRoxa.png" alt="Fita Roxa" width="25" height="20" style="object-fit: contain; margin-right: 25px;" />
+        </template>
       </v-list-item>
 
       <v-divider></v-divider>
