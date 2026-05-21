@@ -2,8 +2,9 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" app color="surface">
       <v-list-item
-        class="bg-primary text-black px-6"
+        class="bg-primary text-black px-6 elevation-3"
         height="64"
+        style="position: relative; z-index: 10;"
       >
         <template v-slot:title>
           <span class="font-weight-bold">Painel de Dados</span>
@@ -12,11 +13,9 @@
           <span class="text-black font-weight-medium" style="opacity: 0.8">Menu de Navegação</span>
         </template>
         <template v-slot:append>
-          <img src="../assets/fitaRoxa.png" alt="Fita Roxa" width="25" height="20" style="object-fit: contain; margin-right: 25px;" />
+          <img src="../assets/fitaRoxa.png" alt="Fita Roxa" width="25" height="20" style="object-fit: contain; margin-right: 10px;" />
         </template>
       </v-list-item>
-
-      <v-divider></v-divider>
 
       <v-list density="compact" nav class="px-4 py-4">
         <v-list-item prepend-icon="mdi-home" title="Página Inicial" to="/" @click="drawer = false"></v-list-item>
@@ -29,10 +28,13 @@
 
     <v-app-bar color="primary" elevation="3">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-app-bar-title class="font-weight-bold text-black">
-        Dados sobre violência contra mulheres no ES
-      </v-app-bar-title>
     </v-app-bar>
+
+    <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 64px; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 2000;">
+      <span class="font-weight-bold text-black" style="font-size: 1.25rem;">
+        Dados sobre violência contra mulheres no ES
+      </span>
+    </div>
 
     <v-main class="bg-white">
       <slot />
