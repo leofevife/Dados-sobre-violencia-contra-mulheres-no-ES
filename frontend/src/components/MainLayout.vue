@@ -19,7 +19,6 @@
         <v-list-item prepend-icon="mdi-home" title="Página Inicial" to="/" @click="drawer = false"></v-list-item>
         
         <v-list-subheader>Tabelas de Dados</v-list-subheader>
-        <v-list-item prepend-icon="mdi-table" title="Feminicídio" to="/feminicidio" @click="drawer = false"></v-list-item>
         <v-list-item prepend-icon="mdi-table-multiple" title="Violência Geral" to="/violencia-geral" @click="drawer = false"></v-list-item>
 
       </v-list>

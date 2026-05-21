@@ -6,7 +6,6 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 import PaginaInicial from '@/pages/PaginaInicial.vue'
-import TabelaFeminicidio from '@/pages/TabelaFeminicidio.vue'
 import TabelaViolenciaGeral from '@/pages/TabelaViolenciaGeral.vue'
 
 const router = createRouter({
@@ -16,11 +15,6 @@ const router = createRouter({
       path: '/',
       name: 'Home',
       component: PaginaInicial,
-    },
-    {
-      path: '/feminicidio',
-      name: 'Feminicidio',
-      component: TabelaFeminicidio,
     },
     {
       path: '/violencia-geral',
