@@ -26,7 +26,7 @@
       <v-col cols="12" lg="10" xl="8">
         <v-card elevation="6" rounded="xl" class="overflow-hidden">
           <v-card-title class="d-flex justify-space-between align-center bg-primary px-6 py-4">
-            <span class="text-h5 font-weight-medium">VIOLÊNCIA GERAL</span>
+            <span class="text-h5 font-weight-medium">INCIDÊNCIAS POR HORA</span>
           </v-card-title>
 
           <v-data-table :headers="headers" :items="filteredData" :items-per-page="10"
@@ -101,7 +101,7 @@ const loadTable = async () => {
   error.value = ''
 
   try {
-    const tableResult = await fetchJson<{ success: boolean; rows: TableRow[] }>(`/local/table/violencia_geral`)
+    const tableResult = await fetchJson<{ success: boolean; rows: TableRow[] }>(`/supabase/view/incidencias_hora`)
     tableData.value = tableResult.rows ?? []
   } catch (err: unknown) {
     error.value = err instanceof Error ? err.message : 'Erro desconhecido ao carregar tabela.'

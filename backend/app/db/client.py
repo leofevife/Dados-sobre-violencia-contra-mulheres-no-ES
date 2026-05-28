@@ -1,87 +1,48 @@
 import os
-import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 import requests
 
-CLOUDFLARE_API_BASE = "https://api.cloudflare.com/client/v4"
-TABLE_NAME_RE = re.compile(r"^[A-Za-z0-9_]+$")
 
-class CloudflareD1Client:
+class SupabaseClient:
     def __init__(self):
-        self.account_id = os.getenv("ACCOUNT_ID")
-        self.database_id = os.getenv("DATABASE_ID")
-        self.api_token = os.getenv("API_TOKEN")
+        self.url = os.getenv("SUPABASE_URL")
+        self.key = os.getenv("SUPABASE_KEY")
 
-        if not self.account_id or not self.database_id or not self.api_token:
+        if not self.url or not self.key:
             raise ValueError(
-                "ACCOUNT_ID, DATABASE_NAME/DATABASE_ID e API_TOKEN devem estar definidos no arquivo .env"
+                "SUPABASE_URL e SUPABASE_KEY devem estar definidos no arquivo .env"
             )
 
     def _headers(self) -> Dict[str, str]:
         return {
-            "Authorization": f"Bearer {self.api_token}",
+            "apikey": self.key,
+            "Authorization": f"Bearer {self.key}",
             "Content-Type": "application/json",
         }
 
-    def query(self, statement: str, params: Optional[Dict[str, Any]] = None) -> Any:        
-        payload = {"sql": statement}
-        if params:
-            payload["params"] = params
+    def get_view(self, view_name: str, limit: int = 1000, offset: int = 0) -> List[Dict[str, Any]]:
+        url = f"{self.url}/rest/v1/{view_name}?select=*&limit={limit}&offset={offset}"
+        headers = self._headers()
+        headers["Prefer"] = "count=exact"
 
-        urls = [
-            f"{CLOUDFLARE_API_BASE}/accounts/{self.account_id}/d1/database/{self.database_id}/query",
-            f"{CLOUDFLARE_API_BASE}/accounts/{self.account_id}/d1/databases/{self.database_id}/query",
-        ]
-
-        response = None
-        for url in urls:
-            response = requests.post(url, headers=self._headers(), json=payload, timeout=30)
-            if response.status_code != 404:
-                break
-
-        if response is None:
-            raise RuntimeError("Não foi possível conectar ao endpoint Cloudflare D1.")
+        response = requests.get(url, headers=headers, timeout=30)
 
         if response.status_code == 401:
-            raise RuntimeError(
-                "401 Unauthorized: verifique se o API_TOKEN Cloudflare tem permissão para acessar D1 "
-                "e se ACCOUNT_ID/DATABASE_ID estão corretos."
-            )
+            raise RuntimeError("401 Unauthorized: verifique a SUPABASE_KEY.")
 
-        try:
-            response.raise_for_status()
-        except requests.exceptions.HTTPError as http_err:
-            payload_text = response.text
-            raise RuntimeError(
-                f"Cloudflare D1 HTTP error {response.status_code}: {payload_text}"
-            ) from http_err
+        response.raise_for_status()
+        return response.json()
 
-        data = response.json()
-        if not data.get("success"):
-            raise RuntimeError(f"Cloudflare D1 returned failure: {data}")
+    def get_view_all(self, view_name: str) -> List[Dict[str, Any]]:
+        all_rows: List[Dict[str, Any]] = []
+        limit = 1000
+        offset = 0
 
-        return data.get("result")
+        while True:
+            rows = self.get_view(view_name, limit=limit, offset=offset)
+            all_rows.extend(rows)
+            if len(rows) < limit:
+                break
+            offset += limit
 
-    def list_tables(self) -> List[str]:
-        rows = self.query(
-            "SELECT name FROM sqlite_master WHERE type IN ('table', 'view') AND name NOT LIKE 'sqlite_%' ORDER BY name"
-        )
-        if isinstance(rows, list) and len(rows) > 0 and "results" in rows[0]:
-            rows = rows[0]["results"]
-            
-        table_names: List[str] = []
-        for row in rows:
-            if isinstance(row, dict) and "name" in row:
-                table_names.append(str(row["name"]))
-            elif isinstance(row, (list, tuple)) and row:
-                table_names.append(str(row[0]))
-        return table_names
-
-    def select_table(self, table_name: str, limit: int = 100) -> List[Dict[str, Any]]:
-        if not TABLE_NAME_RE.match(table_name):
-            raise ValueError("Nome da tabela inválido")
-        statement = f"SELECT * FROM {table_name} LIMIT {limit}"
-        rows = self.query(statement)
-        if isinstance(rows, list) and len(rows) > 0 and "results" in rows[0]:
-            return rows[0]["results"]
-        return rows if isinstance(rows, list) else []
+        return all_rows
