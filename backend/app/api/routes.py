@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import Response
 
 from app.db.client import SupabaseClient
 
@@ -39,5 +40,15 @@ def get_view_incidencias_hora():
     try:
         rows = sb_client.get_view_all("view_incidencias_hora")
         return {"success": True, "rows": rows}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/analise/incidencias-hora")
+def grafico_incidencias_hora():
+    try:
+        from data.analise_incidencias import gerar_grafico_incidencias_hora
+        img_bytes = gerar_grafico_incidencias_hora()
+        return Response(content=img_bytes, media_type="image/png")
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))

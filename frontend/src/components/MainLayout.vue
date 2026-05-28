@@ -23,6 +23,9 @@
         <v-list-subheader>Tabelas de Dados</v-list-subheader>
         <v-list-item prepend-icon="mdi-table-multiple" title="Violência Geral" to="/violencia-geral" @click="drawer = false"></v-list-item>
 
+        <v-list-subheader>Análises</v-list-subheader>
+        <v-list-item prepend-icon="mdi-chart-line" title="Incidências por Hora" to="/analise-incidencias-hora" @click="drawer = false"></v-list-item>
+
       </v-list>
     </v-navigation-drawer>
 
