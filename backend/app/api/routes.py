@@ -52,3 +52,13 @@ def grafico_incidencias_hora():
         return Response(content=img_bytes, media_type="image/png")
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/analise/treemap-tipo-local")
+def grafico_treemap_tipo_local():
+    try:
+        from data.analise_tipo_local import gerar_treemap_tipo_local
+        img_bytes = gerar_treemap_tipo_local()
+        return Response(content=img_bytes, media_type="image/png")
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
