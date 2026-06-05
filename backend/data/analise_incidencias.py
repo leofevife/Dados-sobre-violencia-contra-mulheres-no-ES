@@ -77,3 +77,78 @@ def gerar_grafico_incidencias_hora() -> bytes:
     plt.close(fig)
     buf.seek(0)
     return buf.read()
+
+
+def gerar_grafico_incidencias_hora_local(local_nome: str) -> bytes:
+    sb = SupabaseClient()
+    dados = sb.get_view_all("VW_INCIDENCIAS_HORA_TOP10")
+    
+    df = pd.DataFrame(dados)
+    df.columns = [c.strip().lower() for c in df.columns]
+    
+    col_local = "tipo_local"
+    col_hora = "bloco_hora"
+    col_qtd = "qtd_incidencias"
+    
+    df = df[df[col_local] == local_nome]
+    df = df[df[col_hora] != "N/I"]
+    
+    df[col_hora] = pd.to_numeric(df[col_hora], errors="coerce")
+    df[col_qtd] = pd.to_numeric(df[col_qtd], errors="coerce")
+    df = df.dropna(subset=[col_hora, col_qtd])
+    df = df.sort_values(col_hora)
+    
+    if df.empty:
+        fig, ax = plt.subplots(figsize=(14, 6))
+        ax.text(0.5, 0.5, "Sem dados suficientes para exibir o gráfico", 
+                ha="center", va="center", fontsize=14, color="gray")
+        ax.axis("off")
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
+        plt.close(fig)
+        buf.seek(0)
+        return buf.read()
+
+    sns.set_theme(style="whitegrid", palette="muted")
+    fig, ax = plt.subplots(figsize=(14, 6))
+    
+    sns.lineplot(
+        data=df,
+        x=col_hora,
+        y=col_qtd,
+        marker="o",
+        linewidth=2.5,
+        markersize=8,
+        color="#7B2D8E",
+        ax=ax,
+    )
+    
+    ax.fill_between(df[col_hora], df[col_qtd], alpha=0.15, color="#7B2D8E")
+    
+    ax.set_title(f"Incidências em determinada hora - {local_nome}", fontsize=18, fontweight="bold", pad=15)
+    ax.set_xlabel("Hora do Dia", fontsize=13, fontweight="medium")
+    ax.set_ylabel("Quantidade de Incidências", fontsize=13, fontweight="medium")
+    
+    ax.set_xticks(range(int(df[col_hora].min()), int(df[col_hora].max()) + 1))
+    ax.tick_params(axis="both", labelsize=11)
+    
+    for x_val, y_val in zip(df[col_hora], df[col_qtd]):
+        ax.annotate(
+            f"{int(y_val)}",
+            (x_val, y_val),
+            textcoords="offset points",
+            xytext=(0, 12),
+            ha="center",
+            fontsize=9,
+            fontweight="bold",
+            color="#4A1A5E",
+        )
+        
+    sns.despine(left=True, bottom=True)
+    fig.tight_layout()
+    
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    buf.seek(0)
+    return buf.read()

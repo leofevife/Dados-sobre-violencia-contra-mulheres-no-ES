@@ -62,3 +62,36 @@ def grafico_treemap_tipo_local():
         return Response(content=img_bytes, media_type="image/png")
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/analise/locais-disponiveis")
+def obter_locais_disponiveis():
+    try:
+        rows = sb_client.get_view_all("VW_INCIDENCIAS_HORA_TOP10")
+        locais = {}
+        for r in rows:
+            tipo_local = r.get("tipo_local", r.get("TIPO_LOCAL"))
+            bloco_hora = r.get("bloco_hora", r.get("BLOCO_HORA"))
+            qtd = int(r.get("qtd_incidencias", r.get("QTD_INCIDENCIAS", 0)))
+            
+            if tipo_local not in locais:
+                locais[tipo_local] = {"ni_count": 0}
+            
+            if bloco_hora == "N/I":
+                locais[tipo_local]["ni_count"] = qtd
+                
+        resultado = [{"local": k, "ni_count": v["ni_count"]} for k, v in locais.items()]
+        resultado.sort(key=lambda x: x["local"])
+        return {"success": True, "locais": resultado}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/analise/incidencias-hora-local")
+def grafico_incidencias_hora_local(local: str):
+    try:
+        from data.analise_incidencias import gerar_grafico_incidencias_hora_local
+        img_bytes = gerar_grafico_incidencias_hora_local(local)
+        return Response(content=img_bytes, media_type="image/png")
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))

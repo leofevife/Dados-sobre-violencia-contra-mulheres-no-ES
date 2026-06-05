@@ -74,6 +74,40 @@
               Locais como <strong>comércio</strong>, <strong>escola</strong> e <strong>hospital</strong> também figuram no ranking, demonstrando que a violência contra a mulher atravessa todos os espaços de convivência social. A presença de hospitais na lista pode indicar, inclusive, casos em que a própria vítima busca atendimento médico e, nesse momento, a violência é identificada ou registrada. A diversidade de locais reforça a necessidade de políticas públicas transversais, que não se restrinjam ao enfrentamento da violência doméstica, mas que contemplem a proteção da mulher em todos os ambientes onde ela circula.
             </p>
           </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-text class="px-6 pb-6 pt-10">
+            <h3 style="font-size: 2rem; font-weight: 800; margin-bottom: 24px; text-align: center;">Incidências por Hora por Local</h3>
+            <v-select
+              v-model="selectedLocal"
+              :items="locais"
+              item-title="local"
+              item-value="local"
+              label="Selecione o Local"
+              variant="outlined"
+              @update:model-value="loadLocalChart"
+            ></v-select>
+            
+            <div v-if="loadingLocal" class="d-flex justify-center my-4">
+              <v-progress-circular indeterminate color="primary"></v-progress-circular>
+            </div>
+            <div v-else-if="errorLocal">
+              <v-alert type="error" border="start" variant="tonal" class="mb-4">
+                {{ errorLocal }}
+              </v-alert>
+            </div>
+            <div v-else-if="localChartUrl" class="d-flex flex-column align-center mt-4">
+              <img
+                :src="localChartUrl"
+                alt="Gráfico de incidências por hora no local"
+                style="max-width: 100%; height: auto; border-radius: 8px;"
+              />
+              <p class="text-caption mt-2 text-grey-darken-1 font-weight-bold">
+                * {{ selectedLocalData?.ni_count || 0 }} incidência(s) sem horário informado (N/I) neste local.
+              </p>
+            </div>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -81,7 +115,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 
 const loading = ref(false)
 const error = ref('')
@@ -91,6 +125,18 @@ const chartUrl = ref('')
 const loadingTreemap = ref(false)
 const errorTreemap = ref('')
 const treemapUrl = ref('')
+
+interface LocalData {
+  local: string
+  ni_count: number
+}
+
+const locais = ref<LocalData[]>([])
+const selectedLocal = ref<string | null>(null)
+const selectedLocalData = computed(() => locais.value.find(l => l.local === selectedLocal.value))
+const loadingLocal = ref(false)
+const errorLocal = ref('')
+const localChartUrl = ref('')
 
 const loadChart = async () => {
   loading.value = true
@@ -128,8 +174,43 @@ const loadTreemap = async () => {
   }
 }
 
+const loadLocais = async () => {
+  try {
+    const response = await fetch(`${apiBase}/analise/locais-disponiveis`)
+    if (!response.ok) throw new Error('Falha ao carregar locais')
+    const data = await response.json()
+    if (data.success) {
+      locais.value = data.locais
+      if (locais.value.length > 0) {
+        selectedLocal.value = locais.value[0].local
+        await loadLocalChart(selectedLocal.value)
+      }
+    }
+  } catch (err: unknown) {
+    console.error(err)
+  }
+}
+
+const loadLocalChart = async (local: string) => {
+  if (!local) return
+  loadingLocal.value = true
+  errorLocal.value = ''
+  
+  try {
+    const response = await fetch(`${apiBase}/analise/incidencias-hora-local?local=${encodeURIComponent(local)}`)
+    if (!response.ok) throw new Error('Falha ao carregar gráfico do local')
+    const blob = await response.blob()
+    localChartUrl.value = URL.createObjectURL(blob)
+  } catch (err: unknown) {
+    errorLocal.value = err instanceof Error ? err.message : 'Erro desconhecido ao carregar gráfico do local.'
+  } finally {
+    loadingLocal.value = false
+  }
+}
+
 onMounted(async () => {
   await loadChart()
   await loadTreemap()
+  await loadLocais()
 })
 </script>
