@@ -49,7 +49,7 @@
             <img
               v-else-if="treemapUrl"
               :src="treemapUrl"
-              alt="Treemap dos 10 locais com mais incidências"
+              alt="Gráfico de barras dos 10 locais com mais incidências"
               style="max-width: 100%; height: auto; border-radius: 8px;"
             />
             <v-alert v-else-if="errorTreemap" type="error" border="start" variant="tonal">
@@ -57,23 +57,7 @@
             </v-alert>
           </v-card-text>
 
-          <v-divider></v-divider>
 
-          <v-card-text class="px-6 pb-6 pt-10">
-            <h3 style="font-size: 2rem; font-weight: 800; margin-top: 32px; margin-bottom: 24px; text-align: center;">Análise e Problematização dos Dados</h3>
-            <p class="text-body-1 mb-4 text-justify">
-              O treemap acima evidencia que a <strong>residência</strong> é, disparadamente, o local com maior número de incidências de violência contra a mulher, concentrando 2.662 registros. Esse dado reforça o que estudos e pesquisas já apontam: a violência contra a mulher é predominantemente <strong>doméstica e íntima</strong>. O lar, que deveria ser um espaço de segurança, torna-se o principal cenário de agressões, frequentemente perpetradas por companheiros, ex-companheiros ou familiares. Fatores como dependência financeira, medo de retaliação, presença de filhos e a naturalização da violência no ambiente privado contribuem para que essas situações se perpetuem dentro de casa.
-            </p>
-            <p class="text-body-1 mb-4 text-justify">
-              A <strong>via pública</strong> aparece como o segundo local mais recorrente, com 2.004 ocorrências, o que indica que a violência contra a mulher não se limita ao espaço doméstico. Assédio, perseguição (<em>stalking</em>) e agressões em espaços abertos revelam a dimensão estrutural do problema, evidenciando que a insegurança feminina permeia tanto o ambiente privado quanto o público.
-            </p>
-            <p class="text-body-1 mb-4 text-justify">
-              Outro ponto que merece atenção crítica é o <strong>ambiente web</strong>, que registra 1.482 incidências. Embora esse número já seja significativo, ele está longe de representar a totalidade dos crimes virtuais contra a mulher. A realidade é que a <strong>subnotificação nesse tipo de crime é altíssima</strong>: muitas vítimas de pornografia não consensual, cyberstalking, ameaças online e assédio virtual sequer registram ocorrência, seja por desconhecimento de que tais atos constituem crime, pela dificuldade de reunir provas digitais, ou pela descrença de que as autoridades serão capazes de investigar e punir os agressores. Portanto, os dados de ambiente web representam apenas a ponta do iceberg de um fenômeno muito mais amplo.
-            </p>
-            <p class="text-body-1 mb-4 text-justify">
-              Locais como <strong>comércio</strong>, <strong>escola</strong> e <strong>hospital</strong> também figuram no ranking, demonstrando que a violência contra a mulher atravessa todos os espaços de convivência social. A presença de hospitais na lista pode indicar, inclusive, casos em que a própria vítima busca atendimento médico e, nesse momento, a violência é identificada ou registrada. A diversidade de locais reforça a necessidade de políticas públicas transversais, que não se restrinjam ao enfrentamento da violência doméstica, mas que contemplem a proteção da mulher em todos os ambientes onde ela circula.
-            </p>
-          </v-card-text>
 
           <v-divider></v-divider>
 
@@ -107,6 +91,24 @@
                 * {{ selectedLocalData?.ni_count || 0 }} incidência(s) sem horário informado (N/I) neste local.
               </p>
             </div>
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-text class="px-6 pb-6 pt-10">
+            <h3 style="font-size: 2rem; font-weight: 800; margin-top: 32px; margin-bottom: 24px; text-align: center;">Análise e Problematização dos Dados</h3>
+            <p class="text-body-1 mb-4 text-justify">
+              O gráfico de barras acima evidencia que a <strong>residência</strong> é, disparadamente, o local com maior número de incidências de violência contra a mulher, concentrando 3.080 registros — mais que o triplo do segundo colocado. Esse dado reforça que a violência contra a mulher é predominantemente <strong>doméstica e íntima</strong>. Ao cruzar essa informação com o gráfico de incidências por hora no local "RESIDÊNCIA", percebemos que os maiores picos ocorrem no período da noite (especialmente entre 19h e 22h) e à meia-noite (0h). Esse padrão horário tem explicação: o período noturno e o início da madrugada geralmente coincidem com o retorno do agressor e da vítima para casa após o expediente. É o momento em que ambos estão no mesmo ambiente privado, isolados da vista pública, o que facilita o ciclo da agressão e dificulta pedidos de socorro. Além disso, fatores como o uso abusivo de álcool (mais comum à noite) e a convivência forçada prolongada no final do dia funcionam como gatilhos para que a violência escale dentro de casa.
+            </p>
+            <p class="text-body-1 mb-4 text-justify">
+              A <strong>via pública</strong> aparece como o segundo local mais recorrente, com 946 ocorrências, indicando que a violência não se limita ao espaço doméstico. Casos de assédio, perseguição (<em>stalking</em>) e agressões físicas em ruas e praças revelam a dimensão estrutural do problema, evidenciando que a insegurança feminina permeia profundamente os espaços abertos e de circulação.
+            </p>
+            <p class="text-body-1 mb-4 text-justify">
+              Outro ponto crítico é o <strong>ambiente web</strong>, com 208 incidências registradas. É vital ressaltar que a <strong>subnotificação de crimes virtuais é massiva</strong>. Muitas vítimas de pornografia não consensual, <em>cyberstalking</em> e assédio online não denunciam por desconhecerem que as práticas configuram crime, por dificuldades técnicas em reunir provas digitais ou pelo medo do julgamento social. Portanto, os dados de ambiente web representam apenas uma pequena fração do real volume de violências no meio digital.
+            </p>
+            <p class="text-body-1 mb-4 text-justify">
+              A presença de locais como <strong>comércio</strong> (184 ocorrências), <strong>hospital</strong> (65) e <strong>escola</strong> (31) no ranking demonstra que a violência atravessa as mais diversas esferas do convívio social. A identificação de casos em hospitais e escolas evidencia a importância desses equipamentos públicos atuarem não apenas no atendimento direto, mas também como portas de entrada cruciais para acolher e encaminhar vítimas que sofrem violência em outros ambientes. A diversidade de cenários reforça a urgência de uma rede de apoio transversal.
+            </p>
           </v-card-text>
         </v-card>
       </v-col>
