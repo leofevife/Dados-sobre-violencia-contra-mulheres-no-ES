@@ -110,3 +110,114 @@ def gerar_grafico_faixa_etaria() -> bytes:
     plt.close(fig)
     buf.seek(0)
     return buf.read()
+
+
+def gerar_grafico_faixa_etaria_cor_pele() -> bytes:
+    sb = SupabaseClient()
+    dados = sb.get_view_all("VW_FAIXA_ETARIA_POR_COR_PELE")
+
+    df = pd.DataFrame(dados)
+    df.columns = [c.strip().lower() for c in df.columns]
+
+    col_faixa = "faixa_etaria"
+    col_cor = "cor_pele"
+    col_qtd = "qtd_incidencias"
+
+    df[col_qtd] = pd.to_numeric(df[col_qtd], errors="coerce")
+    df = df.dropna(subset=[col_qtd])
+    df = df[df[col_cor] != "INDETERMINADA"]
+
+    ordem_faixas = ["ADULTO", "IDOSO", "ADOLESCENTE", "CRIANCA", "IGNORADO"]
+    ordem_cores = ["PARDA", "BRANCA", "NEGRA", "S/I", "AMARELA", "INDIGENA"]
+
+    palette = {
+        "PARDA": "#7B2D8E",
+        "BRANCA": "#A855F7",
+        "NEGRA": "#C084FC",
+        "S/I": "#9CA3AF",
+        "AMARELA": "#F59E0B",
+        "INDIGENA": "#10B981",
+    }
+
+    faixas_presentes = [f for f in ordem_faixas if f in df[col_faixa].unique()]
+
+    sns.set_theme(style="whitegrid")
+    fig, axes = plt.subplots(
+        nrows=len(faixas_presentes),
+        ncols=1,
+        figsize=(14, 3.2 * len(faixas_presentes)),
+        sharex=False,
+    )
+
+    if len(faixas_presentes) == 1:
+        axes = [axes]
+
+    for idx, faixa in enumerate(faixas_presentes):
+        ax = axes[idx]
+        subset = df[df[col_faixa] == faixa].copy()
+
+        cat_type = pd.CategoricalDtype(categories=ordem_cores, ordered=True)
+        subset[col_cor] = subset[col_cor].astype(cat_type)
+        subset = subset.sort_values(col_cor)
+
+        cores_presentes = [c for c in ordem_cores if c in subset[col_cor].values]
+        subset = subset[subset[col_cor].isin(cores_presentes)]
+
+        bar_colors = [palette.get(c, "#888888") for c in subset[col_cor]]
+
+        bars = ax.barh(
+            subset[col_cor],
+            subset[col_qtd],
+            color=bar_colors,
+            edgecolor="white",
+            linewidth=1.2,
+            height=0.6,
+        )
+
+        max_val = subset[col_qtd].max()
+        for bar_item in bars:
+            width = bar_item.get_width()
+            offset = max_val * 0.015
+            ax.text(
+                width + offset,
+                bar_item.get_y() + bar_item.get_height() / 2,
+                f"{int(width):,}".replace(",", "."),
+                ha="left",
+                va="center",
+                fontsize=11,
+                fontweight="bold",
+                color="#4A1A5E",
+            )
+
+        ax.set_title(
+            faixa,
+            fontsize=15,
+            fontweight="bold",
+            color="#4A1A5E",
+            loc="left",
+            pad=8,
+        )
+
+        ax.set_xlim(0, max_val * 1.18)
+        ax.tick_params(axis="y", labelsize=11)
+        ax.tick_params(axis="x", labelsize=9)
+        ax.xaxis.set_visible(False)
+        sns.despine(ax=ax, left=True, bottom=True)
+
+    fig.suptitle(
+        "Distribuição por Cor de Pele em Cada Faixa Etária",
+        fontsize=20,
+        fontweight="bold",
+        color="#4A1A5E",
+        y=1.01,
+    )
+
+    fig.tight_layout()
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    buf.seek(0)
+    return buf.read()
+
+

@@ -105,3 +105,14 @@ def grafico_faixa_etaria():
         return Response(content=img_bytes, media_type="image/png")
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/analise/faixa-etaria-cor-pele")
+def grafico_faixa_etaria_cor_pele():
+    try:
+        from data.analise_faixa_etaria import gerar_grafico_faixa_etaria_cor_pele
+        img_bytes = gerar_grafico_faixa_etaria_cor_pele()
+        return Response(content=img_bytes, media_type="image/png")
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
