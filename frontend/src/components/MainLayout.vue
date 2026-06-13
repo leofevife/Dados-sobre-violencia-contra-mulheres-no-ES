@@ -49,10 +49,19 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import AppFooter from './AppFooter.vue'
 
-const drawer = ref(true)
+const drawer = ref(false)
+const route = useRoute()
+
+watch(
+  () => route.path,
+  () => {
+    drawer.value = false
+  }
+)
 </script>
 
 <style>

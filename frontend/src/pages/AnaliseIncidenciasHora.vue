@@ -62,19 +62,22 @@
           <v-divider></v-divider>
 
           <v-card-text class="px-6 pb-6 pt-10">
-            <v-select
-              v-model="selectedLocal"
-              :items="locais"
-              item-title="local"
-              item-value="local"
-              label="Selecione o Local"
-              variant="outlined"
-              density="compact"
-              bg-color="surface"
-              class="elevation-2 rounded-lg"
-              style="max-width: 320px; width: 100%;"
-              @update:model-value="loadLocalChart"
-            ></v-select>
+            <div class="mx-auto" style="max-width: 320px; width: 100%;">
+              <span class="text-subtitle-2 mb-2 d-block font-weight-medium text-grey-darken-2 text-center">Selecione o Local</span>
+              <v-select
+                v-model="selectedLocal"
+                :items="locais"
+                item-title="local"
+                item-value="local"
+                variant="outlined"
+                density="compact"
+                hide-details
+                bg-color="surface"
+                class="elevation-2 rounded-lg"
+                style="width: 100%;"
+                @update:model-value="loadLocalChart"
+              ></v-select>
+            </div>
             
             <div v-if="loadingLocal" class="d-flex justify-center my-4">
               <v-progress-circular indeterminate color="primary"></v-progress-circular>
