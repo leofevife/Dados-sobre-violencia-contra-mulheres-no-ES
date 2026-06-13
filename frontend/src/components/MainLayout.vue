@@ -40,14 +40,17 @@
       </span>
     </div>
 
-    <v-main class="bg-white">
+    <v-main class="bg-white" style="padding-bottom: 64px;">
       <slot />
     </v-main>
+
+    <AppFooter />
   </v-app>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import AppFooter from './AppFooter.vue'
 
 const drawer = ref(true)
 </script>
