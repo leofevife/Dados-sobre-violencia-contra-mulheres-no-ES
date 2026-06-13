@@ -8,16 +8,16 @@
 
         <div class="text-left text-body-1 text-high-emphasis space-y-4 mb-8">
           <p class="mb-4">
-            O Espírito Santo historicamente carrega uma marca dolorosa: figurar entre os estados com as maiores taxas de violência contra a mulher e feminicídio no Brasil. Das periferias da Grande Vitória às áreas rurais do interior e do norte capixaba, a violência de gênero não é um fato isolado, mas uma realidade estrutural que silencia vozes todos os dias.
+            O Espírito Santo historicamente enfrenta o grave desafio de figurar entre os estados com elevados índices de violência contra a mulher e feminicídio no Brasil. Das periferias da Grande Vitória às áreas rurais e urbanas do interior, a violência de gênero se manifesta como uma realidade estrutural que impacta a vida de milhares de capixabas todos os dias.
           </p>
           <p class="mb-4">
-            Atrás de cada estatística divulgada nos boletins oficiais, existem histórias interrompidas, famílias fragmentadas e territórios marcados pela vulnerabilidade. No entanto, para combater um problema dessa magnitude, o primeiro passo é tirá-lo da invisibilidade. Subnotificações, falta de centralização e a dificuldade de acesso a dados claros muitas vezes mascaram a real gravidade do cenário em nossos municípios.
+            Para combater esse problema, o primeiro passo é tirá-lo da invisibilidade por meio de dados transparentes e acessíveis. Este projeto tem como objetivo centralizar, tratar e analisar visualmente as informações registradas sobre as ocorrências de violência contra as mulheres no estado.
           </p>
           <p class="mb-4">
-            Este projeto nasce da urgência de lançar luz sobre essa realidade. Através da centralização, tratamento e análise visual de dados públicos sobre a violência contra as mulheres no estado, buscamos transformar planilhas complexas em ferramentas de conscientização e cobrança por políticas públicas eficientes.
+            Os dados analisados nesta plataforma foram obtidos junto à SESP (Secretaria de Estado da Segurança Pública e Defesa Social) e abrangem o período de 2022 a 2025, permitindo traçar um diagnóstico temporal da evolução dessas ocorrências e identificar padrões geográficos e demográficos.
           </p>
           <p class="mb-6">
-            Acreditamos que a informação auditável e acessível é o primeiro instrumento de defesa e transformação. Conhecer os números, entender onde o Estado falha e mapear os focos de violência é um dever coletivo para que o Espírito Santo deixe de ser um cenário de risco e passe a ser, de fato, um lugar seguro para todas as capixabas.
+            Acreditamos que a informação estruturada é um instrumento fundamental para a conscientização social, a cobrança por políticas públicas eficientes e o fortalecimento de redes de apoio. Conhecer a realidade dos números e mapear onde a violência se concentra é um passo essencial para que o Espírito Santo avance na garantia de segurança e dignidade para todas as mulheres.
           </p>
         </div>
 

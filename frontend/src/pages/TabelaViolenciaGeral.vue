@@ -85,7 +85,7 @@ const tableData = ref<TableRow[]>([])
 const filters = ref<Record<string, string>>({})
 const loading = ref(false)
 const error = ref('')
-const apiBase = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000'
+const apiBase = import.meta.env.VITE_API_BASE_URL ?? ''
 
 const fetchJson = async <T>(path: string): Promise<T> => {
   const response = await fetch(`${apiBase}${path}`)

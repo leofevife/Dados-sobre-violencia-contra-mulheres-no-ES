@@ -100,7 +100,7 @@ import { onMounted, ref } from 'vue'
 
 const loading = ref(false)
 const error = ref('')
-const apiBase = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000'
+const apiBase = import.meta.env.VITE_API_BASE_URL ?? ''
 const chartUrl = ref('')
 
 const loadingStacked = ref(false)

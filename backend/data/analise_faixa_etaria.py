@@ -82,7 +82,7 @@ def gerar_grafico_faixa_etaria() -> bytes:
         fontsize=20,
         fontweight="bold",
         pad=25,
-        color="#4A1A5E",
+        color="#000000",
     )
 
     centre_circle = plt.Circle((0, 0), 0.35, fc="white")
@@ -93,14 +93,14 @@ def gerar_grafico_faixa_etaria() -> bytes:
         f"{total:,}".replace(",", "."),
         ha="center", va="center",
         fontsize=22, fontweight="bold",
-        color="#4A1A5E",
+        color="#000000",
     )
     ax.text(
         0, -0.08,
         "Total",
         ha="center", va="center",
         fontsize=11, fontweight="medium",
-        color="#7B2D8E",
+        color="#000000",
     )
 
     fig.tight_layout()
@@ -186,14 +186,14 @@ def gerar_grafico_faixa_etaria_cor_pele() -> bytes:
                 va="center",
                 fontsize=11,
                 fontweight="bold",
-                color="#4A1A5E",
+                color="#000000",
             )
 
         ax.set_title(
             faixa,
             fontsize=15,
             fontweight="bold",
-            color="#4A1A5E",
+            color="#000000",
             loc="left",
             pad=8,
         )
@@ -208,7 +208,7 @@ def gerar_grafico_faixa_etaria_cor_pele() -> bytes:
         "Distribuição por Cor de Pele em Cada Faixa Etária",
         fontsize=20,
         fontweight="bold",
-        color="#4A1A5E",
+        color="#000000",
         y=1.01,
     )
 
