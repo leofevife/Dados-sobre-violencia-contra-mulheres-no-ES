@@ -63,3 +63,7 @@ instance/
 backend/data/*.csv
 backend/data/*.json
 backend/data/*.parquet
+
+package-lock.json
+.ruler/
+AGENTS.md
