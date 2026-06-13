@@ -116,3 +116,32 @@ def grafico_faixa_etaria_cor_pele():
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 
+
+@router.get("/analise/incidencias-ano")
+def grafico_incidencias_ano():
+    try:
+        from data.analise_ano import gerar_grafico_incidencias_ano
+        img_bytes = gerar_grafico_incidencias_ano()
+        return Response(content=img_bytes, media_type="image/png")
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/analise/anos-disponiveis")
+def obter_anos_disponiveis_route():
+    try:
+        from data.analise_ano import obter_anos_disponiveis
+        anos = obter_anos_disponiveis()
+        return {"success": True, "anos": anos}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/analise/incidencias-mes-ano")
+def grafico_incidencias_mes_ano(ano: int):
+    try:
+        from data.analise_ano import gerar_grafico_incidencias_mes_ano
+        img_bytes = gerar_grafico_incidencias_mes_ano(ano)
+        return Response(content=img_bytes, media_type="image/png")
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))

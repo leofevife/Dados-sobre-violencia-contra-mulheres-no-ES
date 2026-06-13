@@ -26,6 +26,7 @@
         <v-list-subheader>Análises</v-list-subheader>
         <v-list-item prepend-icon="mdi-chart-line" title="Incidências por Hora" to="/analise-incidencias-hora" @click="drawer = false"></v-list-item>
         <v-list-item prepend-icon="mdi-chart-line" title="Incidências por Faixa Etária" to="/analise-faixa-etaria" @click="drawer = false"></v-list-item>
+        <v-list-item prepend-icon="mdi-chart-line" title="Incidências por Ano" to="/analise-ano" @click="drawer = false"></v-list-item>
 
       </v-list>
     </v-navigation-drawer>
