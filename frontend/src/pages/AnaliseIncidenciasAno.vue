@@ -45,7 +45,7 @@
 
           <v-card-text class="px-6 pb-6 pt-10">
             <div class="mx-auto" style="max-width: 320px; width: 100%;">
-              <span class="text-subtitle-2 mb-2 d-block font-weight-medium text-grey-darken-2 text-center">Selecione o Ano</span>
+              <span class="text-subtitle-2 mb-2 d-block font-weight-medium text-black text-center">Selecione o Ano</span>
               <v-select
                 v-model="selectedAno"
                 :items="anosDisponiveis"
@@ -75,6 +75,65 @@
               />
             </div>
           </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-text class="px-6 pb-6 pt-10 bg-grey-lighten-4">
+            <h3 style="font-size: 2rem; font-weight: 800; margin-bottom: 24px; text-align: center; color: black;">
+              <v-icon icon="mdi-robot-outline" class="mr-2" color="black"></v-icon>
+              Previsão Futura (Machine Learning)
+            </h3>
+            <p class="text-body-1 mb-6 text-center text-black">
+              Utilize nosso modelo de Regressão Linear para estimar o número de incidências em anos futuros, com base no histórico disponível (2022-2025).
+            </p>
+            
+            <div class="mx-auto text-center" style="max-width: 320px; width: 100%;">
+              <span class="text-subtitle-2 mb-2 d-block font-weight-medium text-black text-center">Digite um Ano Hipotético (Ex: 2026)</span>
+              <v-text-field
+                v-model="anoFuturo"
+                type="number"
+                variant="outlined"
+                density="compact"
+                hide-details
+                bg-color="surface"
+                class="elevation-2 rounded-lg mb-3"
+                style="width: 100%;"
+                @keyup.enter="gerarPrevisao"
+              ></v-text-field>
+              <v-btn
+                color="secondary"
+                elevation="2"
+                class="rounded-lg"
+                height="40"
+                width="120"
+                @click="gerarPrevisao"
+                :loading="loadingMl"
+              >
+                Gerar
+              </v-btn>
+            </div>
+
+            <div v-if="errorMl">
+              <v-alert type="error" border="start" variant="tonal" class="mb-4 mt-6 mx-auto" style="max-width: 600px;">
+                {{ errorMl }}
+              </v-alert>
+            </div>
+            
+            <div v-if="totalPrevisto !== null && !loadingMl" class="mt-8 text-center">
+              <v-card class="d-inline-block pa-4 elevation-3 rounded-xl bg-white border" border="primary">
+                <div class="text-overline text-black font-weight-bold">Total Estimado para {{ anoFuturoPrevisto }}</div>
+                <div class="text-h3 font-weight-black" style="color: black;">{{ totalPrevisto.toLocaleString('pt-BR') }}</div>
+              </v-card>
+            </div>
+
+            <div v-if="mlChartUrl && !loadingMl" class="d-flex flex-column align-center mt-6">
+              <img
+                :src="mlChartUrl"
+                alt="Gráfico de previsão por mês"
+                style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);"
+              />
+            </div>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -94,6 +153,13 @@ const selectedAno = ref<number | null>(null)
 const loadingMes = ref(false)
 const errorMes = ref('')
 const mesChartUrl = ref('')
+
+const anoFuturo = ref<number>(2026)
+const anoFuturoPrevisto = ref<number | null>(null)
+const loadingMl = ref(false)
+const errorMl = ref('')
+const totalPrevisto = ref<number | null>(null)
+const mlChartUrl = ref('')
 
 const loadChart = async () => {
   loading.value = true
@@ -144,6 +210,41 @@ const loadMesChart = async (ano: number) => {
     errorMes.value = err instanceof Error ? err.message : 'Erro desconhecido ao carregar gráfico do mês.'
   } finally {
     loadingMes.value = false
+  }
+}
+
+const gerarPrevisao = async () => {
+  if (!anoFuturo.value || anoFuturo.value < 2026) {
+    errorMl.value = 'Por favor, insira um ano futuro (a partir de 2026).'
+    return
+  }
+  
+  loadingMl.value = true
+  errorMl.value = ''
+  totalPrevisto.value = null
+  mlChartUrl.value = ''
+  
+  try {
+    const dadosRes = await fetch(`${apiBase}/analise/previsao-dados?ano=${anoFuturo.value}`)
+    if (!dadosRes.ok) throw new Error('Falha ao obter os dados de previsão.')
+    const dadosData = await dadosRes.json()
+    
+    if (dadosData.success) {
+      totalPrevisto.value = dadosData.previsao.total_previsto
+      anoFuturoPrevisto.value = dadosData.previsao.ano
+      
+      const chartRes = await fetch(`${apiBase}/analise/previsao-chart?ano=${anoFuturo.value}`)
+      if (!chartRes.ok) throw new Error('Falha ao gerar o gráfico de previsão.')
+      
+      const blob = await chartRes.blob()
+      mlChartUrl.value = URL.createObjectURL(blob)
+    } else {
+      throw new Error('Erro na resposta da previsão.')
+    }
+  } catch (err: unknown) {
+    errorMl.value = err instanceof Error ? err.message : 'Erro desconhecido ao gerar previsão.'
+  } finally {
+    loadingMl.value = false
   }
 }
 

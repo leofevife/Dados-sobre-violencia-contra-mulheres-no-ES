@@ -56,7 +56,7 @@ def gerar_grafico_incidencias_ano() -> bytes:
             ha="center",
             fontsize=10,
             fontweight="bold",
-            color="#4A1A5E",
+            color="black",
         )
 
     y_min, y_max = df[col_qtd].min(), df[col_qtd].max()
@@ -125,7 +125,7 @@ def gerar_grafico_incidencias_mes_ano(ano: int) -> bytes:
                 va="bottom",
                 fontsize=10,
                 fontweight="bold",
-                color="#4A1A5E",
+                color="black",
                 xytext=(0, 4),
                 textcoords="offset points",
             )

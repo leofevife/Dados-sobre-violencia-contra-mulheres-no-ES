@@ -1,83 +1,37 @@
-# projeto-integrador-3
+# Frontend - Observatório de Violência contra Mulheres no ES
 
-Scaffolded with Vuetify CLI.
+Este é o frontend da aplicação web interativa projetada para expor e analisar os dados estatísticos criminais das ocorrências contra a mulher no estado do Espírito Santo, consumidos diretamente do nosso Backend/Supabase.
 
-## Documentation
+## Principais Funcionalidades
+- **Dashboard Estatístico Completo**: Layout limpo, responsivo e moderno seguindo padrões do Material Design.
+- **Gráficos e Visualização de Dados**: Integração com endpoints do FastAPI que geram imagens gráficas (plotadas via seaborn no backend) apresentadas de forma interativa.
+- **Previsões de Inteligência Artificial**: Uma tela específica capaz de interagir com o modelo preditivo do backend, oferecendo opções para que o usuário informe anos hipotéticos e visualize a curva estatística gerada pelo modelo de Machine Learning (Regressão Linear com análise de Sazonalidade Mensal).
+- **Filtros e Menus**: Seções interativas de consulta por horários, por locais específicos do crime, ou recortes anuais.
 
-- Primary docs: https://vuetifyjs.com/
-- Getting started guide: https://vuetifyjs.com/en/getting-started/installation/
-- Community support: https://community.vuetifyjs.com/
-- Issue tracker: https://issues.vuetifyjs.com/
+## Tecnologias Utilizadas
+- **Vue 3**: Framework progressivo adotado para construção da UI.
+- **Vuetify 3**: Biblioteca robusta de componentes de UI (Material Design).
+- **Vite**: Bundler super veloz para desenvolvimento.
+- **TypeScript**: Adição de tipagem forte e maior segurança e escalabilidade.
+- **Vue Router**: Sistema de roteamento embutido para navegação fluida em Single Page Application.
 
-## Stack
+## Estrutura Principal
+- `src/components/MainLayout.vue`: Estrutura do esqueleto do painel administrativo.
+- `src/pages/`: Contém as visões principais (Análise por Hora, por Tipo de Local, por Ano, e módulo de Machine Learning).
+- `src/router/`: Configurações das rotas interativas para o painel lateral.
 
-- Framework: Vue 3 + Vite
-- UI Library: Vuetify
-- Language: TypeScript
-- Package manager: yarn
+## Instalação e Execução
 
-## Start Here
-
-- Main entry: `src/main.ts`
-- Main app component: `src/App.vue`
-- Main styles: `src/styles/`
-- Plugin setup: `src/plugins/`
-
-## Project Structure
-
-- `src/main.ts` — application entry point
-- `src/App.vue` — root component
-- `src/components/` — reusable Vue components
-- `src/plugins/` — plugin registration and setup
-- `src/styles/` — global styles and theme settings
-- `public/` — static public files
-
-## Enabled Features
-
-- ESLint
-- Vuetify MCP
-- Pinia
-- Vue Router
-- Tailwind CSS
-
-## Install
-
-Use your selected package manager (yarn) to install dependencies:
+Utilize o gerenciador de pacotes **yarn** ou **npm** para começar:
 
 ```bash
-yarn install
+# 1. Instalar dependências
+npm install
+# ou yarn install
+
+# 2. Subir servidor de desenvolvimento
+npm run dev
+# ou yarn dev
 ```
 
-## Quick Start
-
-```bash
-yarn install
-yarn dev
-```
-
-## Build
-
-```bash
-yarn build
-```
-
-## Available Scripts
-
-- `yarn dev`
-- `yarn build`
-- `yarn preview`
-- `yarn build-only`
-- `yarn type-check`
-- `yarn lint`
-- `yarn lint:fix`
-- `yarn mcp`
-- `yarn mcp:revert`
-
-## Support Vuetify Development
-
-This project uses Vuetify - an MIT licensed Open Source project. We are glad to welcome contributors and any support for ongoing development:
-
-- Contribute to Vuetify and ecosystem projects: https://github.com/vuetifyjs
-- Request enterprise support: https://support.vuetifyjs.com/
-- Sponsor on GitHub: https://github.com/sponsors/vuetifyjs
-- Support on Open Collective: https://opencollective.com/vuetify
+*Nota: Para garantir o total funcionamento das análises locais e predições interativas (Machine Learning), o servidor FastAPI contido na pasta `/backend` também deverá estar rodando na porta `8000` (ou estar configurado na variável `.env` apropriada).*

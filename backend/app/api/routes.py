@@ -145,3 +145,23 @@ def grafico_incidencias_mes_ano(ano: int):
         return Response(content=img_bytes, media_type="image/png")
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/analise/previsao-dados")
+def previsao_dados(ano: int):
+    try:
+        from data.analise_ml import prever_incidencias_ano
+        dados = prever_incidencias_ano(ano)
+        return {"success": True, "previsao": dados}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/analise/previsao-chart")
+def previsao_chart(ano: int):
+    try:
+        from data.analise_ml import gerar_grafico_previsao_mes_ano
+        img_bytes = gerar_grafico_previsao_mes_ano(ano)
+        return Response(content=img_bytes, media_type="image/png")
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
