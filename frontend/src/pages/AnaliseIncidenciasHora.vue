@@ -62,7 +62,6 @@
           <v-divider></v-divider>
 
           <v-card-text class="px-6 pb-6 pt-10">
-            <h3 style="font-size: 2rem; font-weight: 800; margin-bottom: 24px; text-align: center;">Incidências por Hora por Local</h3>
             <v-select
               v-model="selectedLocal"
               :items="locais"
@@ -70,6 +69,10 @@
               item-value="local"
               label="Selecione o Local"
               variant="outlined"
+              density="compact"
+              bg-color="surface"
+              class="elevation-2 rounded-lg"
+              style="max-width: 320px; width: 100%;"
               @update:model-value="loadLocalChart"
             ></v-select>
             
@@ -96,7 +99,7 @@
           <v-divider></v-divider>
 
           <v-card-text class="px-6 pb-6 pt-10">
-            <h3 style="font-size: 2rem; font-weight: 800; margin-top: 32px; margin-bottom: 24px; text-align: center;">Análise e Problematização dos Dados</h3>
+            <h3 style="font-size: 2rem; font-weight: 800; margin-top: 32px; margin-bottom: 24px; text-align: center;">Análise e Problematização — Detalhamento por Local</h3>
             <p class="text-body-1 mb-4 text-justify">
               O gráfico de barras acima evidencia que a <strong>residência</strong> é, disparadamente, o local com maior número de incidências de violência contra a mulher, concentrando 3.080 registros — mais que o triplo do segundo colocado. Esse dado reforça que a violência contra a mulher é predominantemente <strong>doméstica e íntima</strong>. Ao cruzar essa informação com o gráfico de incidências por hora no local "RESIDÊNCIA", percebemos que os maiores picos ocorrem no período da noite (especialmente entre 19h e 22h) e à meia-noite (0h). Esse padrão horário tem explicação: o período noturno e o início da madrugada geralmente coincidem com o retorno do agressor e da vítima para casa após o expediente. É o momento em que ambos estão no mesmo ambiente privado, isolados da vista pública, o que facilita o ciclo da agressão e dificulta pedidos de socorro. Além disso, fatores como o uso abusivo de álcool (mais comum à noite) e a convivência forçada prolongada no final do dia funcionam como gatilhos para que a violência escale dentro de casa.
             </p>

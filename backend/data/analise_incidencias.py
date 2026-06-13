@@ -50,7 +50,6 @@ def gerar_grafico_incidencias_hora() -> bytes:
 
     ax.fill_between(df[col_hora], df[col_qtd], alpha=0.15, color="#7B2D8E")
 
-    ax.set_title("Incidências em determinada hora", fontsize=18, fontweight="bold", pad=15)
     ax.set_xlabel("Hora do Dia", fontsize=13, fontweight="medium")
     ax.set_ylabel("Quantidade de Incidências", fontsize=13, fontweight="medium")
 
@@ -125,7 +124,6 @@ def gerar_grafico_incidencias_hora_local(local_nome: str) -> bytes:
     
     ax.fill_between(df[col_hora], df[col_qtd], alpha=0.15, color="#7B2D8E")
     
-    ax.set_title(f"Incidências em determinada hora - {local_nome}", fontsize=18, fontweight="bold", pad=15)
     ax.set_xlabel("Hora do Dia", fontsize=13, fontweight="medium")
     ax.set_ylabel("Quantidade de Incidências", fontsize=13, fontweight="medium")
     

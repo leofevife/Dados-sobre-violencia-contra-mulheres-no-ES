@@ -77,14 +77,6 @@ def gerar_grafico_faixa_etaria() -> bytes:
     )
     legend.get_title().set_fontweight("bold")
 
-    ax.set_title(
-        "Incidências por Faixa Etária",
-        fontsize=20,
-        fontweight="bold",
-        pad=25,
-        color="#000000",
-    )
-
     centre_circle = plt.Circle((0, 0), 0.35, fc="white")
     ax.add_artist(centre_circle)
 
@@ -203,14 +195,6 @@ def gerar_grafico_faixa_etaria_cor_pele() -> bytes:
         ax.tick_params(axis="x", labelsize=9)
         ax.xaxis.set_visible(False)
         sns.despine(ax=ax, left=True, bottom=True)
-
-    fig.suptitle(
-        "Distribuição por Cor de Pele em Cada Faixa Etária",
-        fontsize=20,
-        fontweight="bold",
-        color="#000000",
-        y=1.01,
-    )
 
     fig.tight_layout()
 

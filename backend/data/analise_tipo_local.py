@@ -50,7 +50,6 @@ def gerar_treemap_tipo_local() -> bytes:
         ax=ax,
     )
 
-    ax.set_title("Top 10 Locais com Mais Incidências", fontsize=18, fontweight="bold", pad=15)
     ax.set_xlabel("Quantidade de Incidências", fontsize=13, fontweight="medium")
     ax.set_ylabel("", fontsize=13)
     ax.tick_params(axis="both", labelsize=11)
